@@ -11,7 +11,7 @@ jobs:
       #AWS secrets
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} 
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      
+
     runs-on: ubuntu-latest
     environment: production
 
@@ -34,6 +34,7 @@ jobs:
         tf_actions_subcommand: 'init'
         tf_actions_working_dir: '.'
         tf_actions_comment: true
+        args: '-var="instance-type=t3.micro"'
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
@@ -43,6 +44,7 @@ jobs:
         tf_actions_subcommand: 'plan'
         tf_actions_working_dir: '.'
         tf_actions_comment: true
+        args: '-var="instance-type=t3.micro"'
 
     - name: Terraform Apply
       uses: hashicorp/terraform-github-actions@master
@@ -51,3 +53,4 @@ jobs:
         tf_actions_subcommand: 'apply'
         tf_actions_working_dir: '.'
         tf_actions_comment: true
+        args: '-auto approve -var="instance-type=t3.micro"'
