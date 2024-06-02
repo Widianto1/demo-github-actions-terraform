@@ -1,6 +1,15 @@
 name: 'Terraform'
 
 on:
+  workflow_dispatch:
+    inputs:
+      terraform_action:
+        type: choice
+        description: 'Terraform action to execute'
+        options:
+          - 'apply'
+          - 'destroy'
+        required: true
   push:
     branches: [ "main" ]
 
@@ -47,10 +56,21 @@ jobs:
         args: '-var="instance-type=t3.micro"'
 
     - name: Terraform Apply
+      if: ${{ github.event.inputs.terraform action == 'apply'}}
       uses: hashicorp/terraform-github-actions@master
       with:
         tf_actions_version: 0.14.3
-        tf_actions_subcommand: 'apply'
+        tf_actions_subcommand: ${{ github.event.inputs.terraform action }}
+        tf_actions_working_dir: '.'
+        tf_actions_comment: true
+        args: '-auto-approve -var="instance-type=t3.micro"'
+
+    - name: Terraform Destroy
+      if: ${{ github.event.inputs.terraform action == 'destroy'}}
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.14.3
+        tf_actions_subcommand: ${{ github.event.inputs.terraform action }}
         tf_actions_working_dir: '.'
         tf_actions_comment: true
         args: '-auto-approve -var="instance-type=t3.micro"'
