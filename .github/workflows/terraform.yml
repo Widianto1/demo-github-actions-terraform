@@ -5,7 +5,7 @@ on:
     inputs:
       terraform_action:
         type: choice
-        description: 'Terraform action to execute'
+        description: 'Terraform action to execute:'
         options:
           - 'apply'
           - 'destroy'
